@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp
+      spec="1.5+"
+      codebase="http://bertrik.sikken.nl/anabat"
+      href="AnabatConverter.jnlp">
+  <information>
+    <title>Wav to anabat converter</title>
+    <vendor>Bertrik Sikken</vendor>
+    <icon href="WebStartIcon.gif"/>
+    <homepage href="http://bertrik.sikken.nl/bat"/>
+    <description>Wav to anabat converter</description>
+    <description kind="short">Converts time expansion .wav files to anabat format</description>
+    <icon href="WebStartIcon.gif"/>
+    <icon kind="splash" href="WebStartSplash.jpg"/>
+    <offline-allowed/>
+    <update check="always"/>
+    <shortcut online="false">
+      <desktop/>
+    </shortcut>  
+  </information>
+  <security>
+      <all-permissions/>
+  </security>
+  <resources>
+    <j2se version="1.5+" java-vm-args=""/>
+    <jar href="AnabatConverter.jar"/>
+  </resources>
+  <application-desc main-class="nl.sikken.bertrik.anabat.AnabatConverterGui"/>
+</jnlp>
+
