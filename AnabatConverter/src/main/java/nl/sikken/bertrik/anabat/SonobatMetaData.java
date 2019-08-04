@@ -43,7 +43,7 @@ public class SonobatMetaData {
      * @return
      */
     public Date getDate() {
-        return date;
+        return new Date(date.getTime());
     }
 
     public String getCode() {

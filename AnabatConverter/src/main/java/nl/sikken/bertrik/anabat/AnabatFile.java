@@ -271,7 +271,7 @@ public class AnabatFile {
     }
     
     public void setDate(Date date) {
-        this.date = date;
+        this.date = new Date(date.getTime());
     }
     
     private static char hexChar(int i) {
