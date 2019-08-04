@@ -26,7 +26,7 @@ public class AnabatFile {
     private static final int DATA_INFO_SIZE = 54;
     private static final int TEXT_HEADER_SIZE = 276;
     
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
+    public final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
     
     public int res1;
     public int vres;
@@ -75,8 +75,8 @@ public class AnabatFile {
         CharsetDecoder decoder = Charset.forName("US-ASCII").newDecoder();
         byte[] textHeader = new byte[TEXT_HEADER_SIZE];
         stream.read(textHeader);
-        String tape     = decoder.decode(ByteBuffer.wrap(textHeader, 0, 8)).toString();
-        String date     = decoder.decode(ByteBuffer.wrap(textHeader, 8, 8)).toString();
+        tape     = decoder.decode(ByteBuffer.wrap(textHeader, 0, 8)).toString();
+        String dateStr  = decoder.decode(ByteBuffer.wrap(textHeader, 8, 8)).toString();
         String loc      = decoder.decode(ByteBuffer.wrap(textHeader, 16, 40)).toString();
         String species  = decoder.decode(ByteBuffer.wrap(textHeader, 56, 50)).toString();
         String spec     = decoder.decode(ByteBuffer.wrap(textHeader, 106, 16)).toString();

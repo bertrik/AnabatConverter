@@ -348,9 +348,9 @@ public class AnabatConverterGui extends JFrame implements ActionListener {
         ConverterSetting setting = new ConverterSetting(
                 channel.getIndex(), 
                 jTextAreaNotes.getText(), 
-                Integer.valueOf(jTextFieldDivRatio.getText()), 
-                Integer.valueOf(jTextFieldExpRatio.getText()),
-                Integer.valueOf(jTextFieldHighPass.getText()));
+                Integer.parseInt(jTextFieldDivRatio.getText()), 
+                Integer.parseInt(jTextFieldExpRatio.getText()),
+                Integer.parseInt(jTextFieldHighPass.getText()));
         AnabatConverter converter = new AnabatConverter(setting);
         
         String loadName = jTextFieldFileName.getText();
@@ -449,9 +449,9 @@ public class AnabatConverterGui extends JFrame implements ActionListener {
                     ConverterSetting setting = new ConverterSetting(
                             channel.getIndex(), 
                             jTextAreaNotes.getText(), 
-                            Integer.valueOf(jTextFieldDivRatio.getText()),
-                            Integer.valueOf(jTextFieldExpRatio.getText()),
-                            Integer.valueOf(jTextFieldHighPass.getText()));
+                            Integer.parseInt(jTextFieldDivRatio.getText()),
+                            Integer.parseInt(jTextFieldExpRatio.getText()),
+                            Integer.parseInt(jTextFieldHighPass.getText()));
                     
                     try {
                         File dir = new File(jTextFieldFileName.getText()).getParentFile();
