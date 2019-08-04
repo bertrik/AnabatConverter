@@ -33,9 +33,9 @@ public class D500MetaData {
     public boolean load(File file) throws IOException {
         // read raw data
         byte[] data = new byte[512];
-        FileInputStream fis = new FileInputStream(file);
-        fis.read(data);
-        fis.close();
+        try (FileInputStream fis = new FileInputStream(file)) {
+        	fis.read(data);
+        }
         
         // parse if D500 file
         deviceCode = getString(data, 0xF0, 32);
