@@ -143,7 +143,7 @@ public class AnabatFile {
             }
             
             time += interval;
-            list.add(new Long(time));
+            list.add(Long.valueOf(time));
         }
         return list;
     }
