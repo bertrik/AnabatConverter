@@ -16,12 +16,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author Bertrik Sikken
  *
  */
-public class AnabatFile {
-    private static final int FILE_VERSION = 132;
+public final class AnabatFile {
+
+	private final Logger LOG = LoggerFactory.getLogger(AnabatFile.class);
+
+	private static final int FILE_VERSION = 132;
     private static final int FILE_HEADER_SIZE = 6;
     private static final int DATA_INFO_SIZE = 54;
     private static final int TEXT_HEADER_SIZE = 276;
@@ -66,7 +72,7 @@ public class AnabatFile {
                 fileHeaderBuf.get();
                 fileHeaderBuf.get();
                 if (version != FILE_VERSION) {
-                    System.out.println("Invalid file version " + version);
+                    LOG.warn("Invalid file version {}", version);
                     return false;
                 }
             }
@@ -235,7 +241,7 @@ public class AnabatFile {
                     buf.put((byte) ((interval >> 8) & 0xFF));
                     buf.put((byte) ((interval >> 0) & 0xFF));
                 } else {
-                    System.out.println("Cannot encode interval " + interval);
+                    LOG.warn("Cannot encode interval {}", interval);
                 }
             }
             // update previous values
