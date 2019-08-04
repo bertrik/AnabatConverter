@@ -57,54 +57,54 @@ public class AnabatFile {
      */
     public boolean load(File file) throws IOException {
         try (FileInputStream stream = new FileInputStream(file)) {
-	        // file header
-	        ByteBuffer fileHeaderBuf = ByteBuffer.allocate(FILE_HEADER_SIZE).order(ByteOrder.LITTLE_ENDIAN);
-	        if (stream.read(fileHeaderBuf.array()) > 0) {
-		        int dataInfoPtr = fileHeaderBuf.getShort() & 0xFFFF;
-		        fileHeaderBuf.get();
-		        int version = fileHeaderBuf.get() & 0xFF;
-		        fileHeaderBuf.get();
-		        fileHeaderBuf.get();
-		        if (version != FILE_VERSION) {
-		            System.out.println("Invalid file version " + version);
-		            return false;
-		        }
+            // file header
+            ByteBuffer fileHeaderBuf = ByteBuffer.allocate(FILE_HEADER_SIZE).order(ByteOrder.LITTLE_ENDIAN);
+            if (stream.read(fileHeaderBuf.array()) > 0) {
+                int dataInfoPtr = fileHeaderBuf.getShort() & 0xFFFF;
+                fileHeaderBuf.get();
+                int version = fileHeaderBuf.get() & 0xFF;
+                fileHeaderBuf.get();
+                fileHeaderBuf.get();
+                if (version != FILE_VERSION) {
+                    System.out.println("Invalid file version " + version);
+                    return false;
+                }
             }
 
-	        // text header
-	        CharsetDecoder decoder = Charset.forName("US-ASCII").newDecoder();
-	        byte[] textHeader = new byte[TEXT_HEADER_SIZE];
-	        if (stream.read(textHeader) > 0) {
-		        tape     = decoder.decode(ByteBuffer.wrap(textHeader, 0, 8)).toString();
-		        String dateStr  = decoder.decode(ByteBuffer.wrap(textHeader, 8, 8)).toString();
-		        String loc      = decoder.decode(ByteBuffer.wrap(textHeader, 16, 40)).toString();
-		        String species  = decoder.decode(ByteBuffer.wrap(textHeader, 56, 50)).toString();
-		        String spec     = decoder.decode(ByteBuffer.wrap(textHeader, 106, 16)).toString();
-		        note     = decoder.decode(ByteBuffer.wrap(textHeader, 122, 73)).toString();
-		        note1    = decoder.decode(ByteBuffer.wrap(textHeader, 195, 80)).toString();
-	        }
+            // text header
+            CharsetDecoder decoder = Charset.forName("US-ASCII").newDecoder();
+            byte[] textHeader = new byte[TEXT_HEADER_SIZE];
+            if (stream.read(textHeader) > 0) {
+                tape     = decoder.decode(ByteBuffer.wrap(textHeader, 0, 8)).toString();
+                String dateStr  = decoder.decode(ByteBuffer.wrap(textHeader, 8, 8)).toString();
+                String loc      = decoder.decode(ByteBuffer.wrap(textHeader, 16, 40)).toString();
+                String species  = decoder.decode(ByteBuffer.wrap(textHeader, 56, 50)).toString();
+                String spec     = decoder.decode(ByteBuffer.wrap(textHeader, 106, 16)).toString();
+                note     = decoder.decode(ByteBuffer.wrap(textHeader, 122, 73)).toString();
+                note1    = decoder.decode(ByteBuffer.wrap(textHeader, 195, 80)).toString();
+            }
 
-	        // data information table
-	        ByteBuffer dataInfoBuf = ByteBuffer.allocate(DATA_INFO_SIZE).order(ByteOrder.LITTLE_ENDIAN);
-	        if (stream.read(dataInfoBuf.array()) > 0) {
-		        int dataStreamPtr = dataInfoBuf.getShort() & 0xFFFF;
-		        res1 = dataInfoBuf.getShort() & 0xFFFF;
-		        divRatio = dataInfoBuf.get() & 0xFF;
-		        vres = dataInfoBuf.get() & 0xFF;
-		        // date/time
-		        byte[] dateTime = new byte[10];
-		        dataInfoBuf.get(dateTime);
-		        // id code
-		        dataInfoBuf.get(idCode);
-		        // GPS data
-		        dataInfoBuf.get(gpsData);
-	        }
+            // data information table
+            ByteBuffer dataInfoBuf = ByteBuffer.allocate(DATA_INFO_SIZE).order(ByteOrder.LITTLE_ENDIAN);
+            if (stream.read(dataInfoBuf.array()) > 0) {
+                int dataStreamPtr = dataInfoBuf.getShort() & 0xFFFF;
+                res1 = dataInfoBuf.getShort() & 0xFFFF;
+                divRatio = dataInfoBuf.get() & 0xFF;
+                vres = dataInfoBuf.get() & 0xFF;
+                // date/time
+                byte[] dateTime = new byte[10];
+                dataInfoBuf.get(dateTime);
+                // id code
+                dataInfoBuf.get(idCode);
+                // GPS data
+                dataInfoBuf.get(gpsData);
+            }
 
-	        // data stream
-	        byte[] dataStream = new byte[(int) (file.length() - 0x150)];
-	        if (stream.read(dataStream) > 0) {
-            	zeroCrossings = decode(dataStream);
-	        }
+            // data stream
+            byte[] dataStream = new byte[(int) (file.length() - 0x150)];
+            if (stream.read(dataStream) > 0) {
+                zeroCrossings = decode(dataStream);
+            }
         }
         
         return true;
@@ -153,57 +153,56 @@ public class AnabatFile {
      * @throws IOException
      */
     public void save(File file) throws IOException {
-        FileOutputStream stream = new FileOutputStream(file); 
-        
-        // file header
-        ByteBuffer fileHeaderBuf = ByteBuffer.allocate(FILE_HEADER_SIZE).order(ByteOrder.LITTLE_ENDIAN);
-        fileHeaderBuf.putShort((short) 0x11A);
-        fileHeaderBuf.put((byte) 0);
-        fileHeaderBuf.put((byte) FILE_VERSION);
-        fileHeaderBuf.put((byte) 0);
-        fileHeaderBuf.put((byte) 0);
-        stream.write(fileHeaderBuf.array());
-        
-        // text header
-        CharsetEncoder encoder = Charset.forName("US-ASCII").newEncoder();
-        byte[] textHeaderArray = new byte[TEXT_HEADER_SIZE];
-        for (int i = 0; i < (textHeaderArray.length - 1); i++) {
-            textHeaderArray[i] = ' ';
+        try (FileOutputStream stream = new FileOutputStream(file)) {
+            // file header
+            ByteBuffer fileHeaderBuf = ByteBuffer.allocate(FILE_HEADER_SIZE).order(ByteOrder.LITTLE_ENDIAN);
+            fileHeaderBuf.putShort((short) 0x11A);
+            fileHeaderBuf.put((byte) 0);
+            fileHeaderBuf.put((byte) FILE_VERSION);
+            fileHeaderBuf.put((byte) 0);
+            fileHeaderBuf.put((byte) 0);
+            stream.write(fileHeaderBuf.array());
+            
+            // text header
+            CharsetEncoder encoder = Charset.forName("US-ASCII").newEncoder();
+            byte[] textHeaderArray = new byte[TEXT_HEADER_SIZE];
+            for (int i = 0; i < (textHeaderArray.length - 1); i++) {
+                textHeaderArray[i] = ' ';
+            }
+            ByteBuffer textHeaderBuf = ByteBuffer.wrap(textHeaderArray);
+            textHeaderBuf.position(0);
+            textHeaderBuf.put(encoder.encode(CharBuffer.wrap(tape)));
+            textHeaderBuf.position(8);
+            textHeaderBuf.put(encoder.encode(CharBuffer.wrap(DATE_FORMAT.format(date))));
+            textHeaderBuf.position(122);
+            textHeaderBuf.put(encoder.encode(CharBuffer.wrap(note)));
+            textHeaderBuf.position(195);
+            textHeaderBuf.put(encoder.encode(CharBuffer.wrap(note1)));
+            stream.write(textHeaderBuf.array());
+            
+            // data information table
+            ByteBuffer dataInfoBuf = ByteBuffer.allocate(DATA_INFO_SIZE).order(ByteOrder.LITTLE_ENDIAN);
+            dataInfoBuf.putShort((short) 0x150);
+            dataInfoBuf.putShort((short) res1);
+            dataInfoBuf.put((byte) divRatio);
+            dataInfoBuf.put((byte) vres);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            dataInfoBuf.putShort((short) cal.get(Calendar.YEAR));
+            dataInfoBuf.put((byte) (cal.get(Calendar.MONTH) + 1));
+            dataInfoBuf.put((byte) cal.get(Calendar.DAY_OF_MONTH));
+            dataInfoBuf.put((byte) cal.get(Calendar.HOUR_OF_DAY));
+            dataInfoBuf.put((byte) cal.get(Calendar.MINUTE));
+            dataInfoBuf.put((byte) cal.get(Calendar.SECOND));
+            dataInfoBuf.put((byte) 0);
+            dataInfoBuf.putShort((short) 0);
+            dataInfoBuf.put(idCode);
+            dataInfoBuf.put(gpsData);
+            stream.write(dataInfoBuf.array());
+            
+            byte[] dataStream = encode(zeroCrossings);
+            stream.write(dataStream);
         }
-        ByteBuffer textHeaderBuf = ByteBuffer.wrap(textHeaderArray);
-        textHeaderBuf.position(0);
-        textHeaderBuf.put(encoder.encode(CharBuffer.wrap(tape)));
-        textHeaderBuf.position(8);
-        textHeaderBuf.put(encoder.encode(CharBuffer.wrap(DATE_FORMAT.format(date))));
-        textHeaderBuf.position(122);
-        textHeaderBuf.put(encoder.encode(CharBuffer.wrap(note)));
-        textHeaderBuf.position(195);
-        textHeaderBuf.put(encoder.encode(CharBuffer.wrap(note1)));
-        stream.write(textHeaderBuf.array());
-        
-        // data information table
-        ByteBuffer dataInfoBuf = ByteBuffer.allocate(DATA_INFO_SIZE).order(ByteOrder.LITTLE_ENDIAN);
-        dataInfoBuf.putShort((short) 0x150);
-        dataInfoBuf.putShort((short) res1);
-        dataInfoBuf.put((byte) divRatio);
-        dataInfoBuf.put((byte) vres);
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        dataInfoBuf.putShort((short) cal.get(Calendar.YEAR));
-        dataInfoBuf.put((byte) (cal.get(Calendar.MONTH) + 1));
-        dataInfoBuf.put((byte) cal.get(Calendar.DAY_OF_MONTH));
-        dataInfoBuf.put((byte) cal.get(Calendar.HOUR_OF_DAY));
-        dataInfoBuf.put((byte) cal.get(Calendar.MINUTE));
-        dataInfoBuf.put((byte) cal.get(Calendar.SECOND));
-        dataInfoBuf.put((byte) 0);
-        dataInfoBuf.putShort((short) 0);
-        dataInfoBuf.put(idCode);
-        dataInfoBuf.put(gpsData);
-        stream.write(dataInfoBuf.array());
-        
-        byte[] dataStream = encode(zeroCrossings);
-        stream.write(dataStream);
-        stream.close();
     }
 
     /**
