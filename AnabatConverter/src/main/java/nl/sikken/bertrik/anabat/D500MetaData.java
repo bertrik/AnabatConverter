@@ -67,7 +67,9 @@ public class D500MetaData {
      */
     private String getString(byte[] data, int offset, int maxlen) throws IOException {
         InputStream stream = new ByteArrayInputStream(data);
-        stream.skip(offset);
+        if (stream.skip(offset) != offset) {
+        	throw new IOException("stream.skip() failed");
+        }
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < maxlen; i++) {
             int c = stream.read();
