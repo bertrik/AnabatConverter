@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class SonobatMetaData {
 
     private static final Pattern PATTERN = Pattern.compile("(\\d{7})-(\\d{8}_\\d{6}).wav");
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd_HHmmss");
+    private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd_HHmmss");
     
     private Date date;
     private String code;
