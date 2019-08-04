@@ -56,7 +56,7 @@ public class AnabatConverterGui extends JFrame implements ActionListener {
     private JProgressBar jProgressBar = null;
     
     private JLabel jLabelChannel = null;
-    private JComboBox jComboChannel = null;
+    private JComboBox<EChannel> jComboChannel = null;
     
     /**
      * This method initializes 
@@ -487,9 +487,9 @@ public class AnabatConverterGui extends JFrame implements ActionListener {
         return jProgressBar;
     }
     
-    private JComboBox getJComboChannel() {
+    private JComboBox<EChannel> getJComboChannel() {
         if (jComboChannel == null) {
-            jComboChannel = new JComboBox(EChannel.values());
+            jComboChannel = new JComboBox<EChannel>(EChannel.values());
         }
         return jComboChannel;
     }
