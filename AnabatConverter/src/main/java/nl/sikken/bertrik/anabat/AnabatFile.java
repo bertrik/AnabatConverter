@@ -59,48 +59,52 @@ public class AnabatFile {
         try (FileInputStream stream = new FileInputStream(file)) {
 	        // file header
 	        ByteBuffer fileHeaderBuf = ByteBuffer.allocate(FILE_HEADER_SIZE).order(ByteOrder.LITTLE_ENDIAN);
-	        stream.read(fileHeaderBuf.array());
-	        int dataInfoPtr = fileHeaderBuf.getShort() & 0xFFFF;
-	        fileHeaderBuf.get();
-	        int version = fileHeaderBuf.get() & 0xFF;
-	        fileHeaderBuf.get();
-	        fileHeaderBuf.get();
-	        if (version != FILE_VERSION) {
-	            System.out.println("Invalid file version " + version);
-	            return false;
-	        }
-	        
+	        if (stream.read(fileHeaderBuf.array()) > 0) {
+		        int dataInfoPtr = fileHeaderBuf.getShort() & 0xFFFF;
+		        fileHeaderBuf.get();
+		        int version = fileHeaderBuf.get() & 0xFF;
+		        fileHeaderBuf.get();
+		        fileHeaderBuf.get();
+		        if (version != FILE_VERSION) {
+		            System.out.println("Invalid file version " + version);
+		            return false;
+		        }
+            }
+
 	        // text header
 	        CharsetDecoder decoder = Charset.forName("US-ASCII").newDecoder();
 	        byte[] textHeader = new byte[TEXT_HEADER_SIZE];
-	        stream.read(textHeader);
-	        tape     = decoder.decode(ByteBuffer.wrap(textHeader, 0, 8)).toString();
-	        String dateStr  = decoder.decode(ByteBuffer.wrap(textHeader, 8, 8)).toString();
-	        String loc      = decoder.decode(ByteBuffer.wrap(textHeader, 16, 40)).toString();
-	        String species  = decoder.decode(ByteBuffer.wrap(textHeader, 56, 50)).toString();
-	        String spec     = decoder.decode(ByteBuffer.wrap(textHeader, 106, 16)).toString();
-	        note     = decoder.decode(ByteBuffer.wrap(textHeader, 122, 73)).toString();
-	        note1    = decoder.decode(ByteBuffer.wrap(textHeader, 195, 80)).toString();
-	        
+	        if (stream.read(textHeader) > 0) {
+		        tape     = decoder.decode(ByteBuffer.wrap(textHeader, 0, 8)).toString();
+		        String dateStr  = decoder.decode(ByteBuffer.wrap(textHeader, 8, 8)).toString();
+		        String loc      = decoder.decode(ByteBuffer.wrap(textHeader, 16, 40)).toString();
+		        String species  = decoder.decode(ByteBuffer.wrap(textHeader, 56, 50)).toString();
+		        String spec     = decoder.decode(ByteBuffer.wrap(textHeader, 106, 16)).toString();
+		        note     = decoder.decode(ByteBuffer.wrap(textHeader, 122, 73)).toString();
+		        note1    = decoder.decode(ByteBuffer.wrap(textHeader, 195, 80)).toString();
+	        }
+
 	        // data information table
 	        ByteBuffer dataInfoBuf = ByteBuffer.allocate(DATA_INFO_SIZE).order(ByteOrder.LITTLE_ENDIAN);
-	        stream.read(dataInfoBuf.array());
-	        int dataStreamPtr = dataInfoBuf.getShort() & 0xFFFF;
-	        res1 = dataInfoBuf.getShort() & 0xFFFF;
-	        divRatio = dataInfoBuf.get() & 0xFF;
-	        vres = dataInfoBuf.get() & 0xFF;
-	        // date/time
-	        byte[] dateTime = new byte[10];
-	        dataInfoBuf.get(dateTime);
-	        // id code
-	        dataInfoBuf.get(idCode);
-	        // GPS data
-	        dataInfoBuf.get(gpsData);
-	
+	        if (stream.read(dataInfoBuf.array()) > 0) {
+		        int dataStreamPtr = dataInfoBuf.getShort() & 0xFFFF;
+		        res1 = dataInfoBuf.getShort() & 0xFFFF;
+		        divRatio = dataInfoBuf.get() & 0xFF;
+		        vres = dataInfoBuf.get() & 0xFF;
+		        // date/time
+		        byte[] dateTime = new byte[10];
+		        dataInfoBuf.get(dateTime);
+		        // id code
+		        dataInfoBuf.get(idCode);
+		        // GPS data
+		        dataInfoBuf.get(gpsData);
+	        }
+
 	        // data stream
 	        byte[] dataStream = new byte[(int) (file.length() - 0x150)];
-	        stream.read(dataStream);
-	        zeroCrossings = decode(dataStream);
+	        if (stream.read(dataStream) > 0) {
+            	zeroCrossings = decode(dataStream);
+	        }
         }
         
         return true;
