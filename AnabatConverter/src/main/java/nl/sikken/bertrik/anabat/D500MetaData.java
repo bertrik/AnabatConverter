@@ -34,7 +34,9 @@ public class D500MetaData {
         // read raw data
         byte[] data = new byte[512];
         try (FileInputStream fis = new FileInputStream(file)) {
-        	fis.read(data);
+            if (fis.read(data) < data.length) {
+                throw new IOException("Short read");
+            }
         }
         
         // parse if D500 file

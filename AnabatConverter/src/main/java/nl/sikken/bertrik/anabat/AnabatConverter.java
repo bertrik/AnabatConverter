@@ -109,7 +109,9 @@ public class AnabatConverter {
         
         // save anabat file
         File savePath = new File(file.getParent(), saveDir);
-        savePath.mkdirs();
+        if (!savePath.mkdirs()) {
+            throw new IOException("Failed to create directories");
+        }
         af.setZeroCrossings(list);
         af.save(new File(savePath, saveName));
     }    
