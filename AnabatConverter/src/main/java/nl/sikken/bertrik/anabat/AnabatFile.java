@@ -85,7 +85,7 @@ public final class AnabatFile {
                 String dateStr  = decoder.decode(ByteBuffer.wrap(textHeader, 8, 8)).toString();
                 String loc      = decoder.decode(ByteBuffer.wrap(textHeader, 16, 40)).toString();
                 String species  = decoder.decode(ByteBuffer.wrap(textHeader, 56, 50)).toString();
-                String spec     = decoder.decode(ByteBuffer.wrap(textHeader, 106, 16)).toString();
+//                String spec     = decoder.decode(ByteBuffer.wrap(textHeader, 106, 16)).toString();
                 note     = decoder.decode(ByteBuffer.wrap(textHeader, 122, 73)).toString();
                 note1    = decoder.decode(ByteBuffer.wrap(textHeader, 195, 80)).toString();
             }

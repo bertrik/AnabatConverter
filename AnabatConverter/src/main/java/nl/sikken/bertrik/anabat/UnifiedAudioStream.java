@@ -70,7 +70,8 @@ public class UnifiedAudioStream implements IAudioStream {
             case 24:
                 // skip lowest 8 bits of 24 bit sample
                 buffer.get();
-                // fall through to get 16 most significant bits
+                samples[i] = buffer.getShort();
+                break;
             case 16:
                 samples[i] = buffer.getShort();
                 break;

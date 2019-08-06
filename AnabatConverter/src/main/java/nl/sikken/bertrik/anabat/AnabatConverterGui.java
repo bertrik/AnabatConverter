@@ -10,6 +10,10 @@ import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -420,8 +424,6 @@ public class AnabatConverterGui extends JFrame implements ActionListener {
     private JPanel getJPanelStatusBar() {
         if (jPanelStatusBar == null) {
             BorderLayout borderLayout = new BorderLayout();
-            GridBagConstraints gridBagConstraints8 = new GridBagConstraints();
-            gridBagConstraints8.gridwidth = 2;
             jPanelStatusBar = new JPanel();
             jPanelStatusBar.setLayout(borderLayout);
             jPanelStatusBar.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
@@ -455,11 +457,12 @@ public class AnabatConverterGui extends JFrame implements ActionListener {
                     
                     try {
                         File dir = new File(jTextFieldFileName.getText()).getParentFile();
-                        File[] files = dir.listFiles(new WavFileFilter());
+                        List<File> files = Arrays.asList(Optional.ofNullable(dir.listFiles(new WavFileFilter()))
+                                .orElse(new File[0]));
                         
                         // set up progress bar
                         jProgressBar.setMinimum(0);
-                        jProgressBar.setMaximum(files.length);
+                        jProgressBar.setMaximum(files.size());
                         jProgressBar.setStringPainted(true);
                         
                         IProgressListener<String> listener = new IProgressListener<String>() {
@@ -469,7 +472,7 @@ public class AnabatConverterGui extends JFrame implements ActionListener {
                                 jProgressBar.setString(string);
                             }
                         };
-                        ConverterWorker worker = new ConverterWorker(setting, listener, Arrays.asList(files));
+                        ConverterWorker worker = new ConverterWorker(setting, listener, files);
                         worker.execute();
                     } catch (Exception e) {
                         setStatus(e.toString());
