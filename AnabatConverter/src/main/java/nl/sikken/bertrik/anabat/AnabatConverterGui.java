@@ -28,6 +28,8 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
 
+import org.apache.log4j.PropertyConfigurator;
+
 /**
  * @author Bertrik Sikken
  *
@@ -498,6 +500,8 @@ public class AnabatConverterGui extends JFrame implements ActionListener {
     }
     
     public static void main(String[] args) {
+        PropertyConfigurator.configure("log4j.properties");
+     
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
