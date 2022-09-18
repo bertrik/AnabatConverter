@@ -261,7 +261,7 @@ public final class AnabatFile {
     }
 
     public void setZeroCrossings(List<Long> zeroCrossings) {
-        this.zeroCrossings = zeroCrossings;
+        this.zeroCrossings = new ArrayList<>(zeroCrossings);
     }
     
     public void setNote(String note) {

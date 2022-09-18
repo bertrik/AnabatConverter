@@ -1,6 +1,7 @@
 package nl.sikken.bertrik.anabat;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,9 +13,9 @@ import javax.swing.SwingWorker;
  */
 public class ConverterWorker extends SwingWorker<Boolean, String> {
 
-    private final List<File> files;
     private final ConverterSetting setting;
     private final IProgressListener<String> listener;
+    private final List<File> files;
     
     /**
      * @param setting
@@ -22,9 +23,9 @@ public class ConverterWorker extends SwingWorker<Boolean, String> {
      * @param files
      */
     public ConverterWorker(ConverterSetting setting, IProgressListener<String> listener, List<File> files) {
-        this.listener = listener;
-        this.files = files;
         this.setting = setting;
+        this.listener = listener;
+        this.files = new ArrayList<>(files);
     }
     
     /* (non-Javadoc)
