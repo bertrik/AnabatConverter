@@ -1,6 +1,7 @@
 plugins {
   id 'com.github.spotbugs' version '5.0.12'
   id 'com.github.ben-manes.versions' version '0.43.0'
+  id 'org.owasp.dependencycheck' version '7.2.1'
 }
 
 version = '0.1'
@@ -9,6 +10,10 @@ allprojects { group = 'nl.bertriksikken' }
 
 // Define all library dependencies in one file for clarity
 apply from:'dependencies.gradle'
+
+dependencyCheck {
+    scanConfigurations = ['runtimeClasspath']
+}
 
 subprojects {
     apply plugin: "java"
@@ -23,13 +28,7 @@ subprojects {
         mavenCentral()
     }
 
-    spotbugsMain {
-        reports {
-            html {
-                enabled = true
-            }
-        }
-    }
+    spotbugsMain { reports { html { enabled = true } } }
 
     // Standard libraries added to all projects
     dependencies {
