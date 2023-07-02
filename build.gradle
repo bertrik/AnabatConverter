@@ -17,15 +17,15 @@ subprojects {
     apply plugin: "eclipse"
     apply plugin: "com.github.spotbugs"
     apply plugin: 'com.github.ben-manes.versions'
-    
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+
+    java {
+        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+    }
 
     repositories {
         mavenCentral()
     }
-
-    spotbugsMain { reports { html { enabled = true } } }
 
     // Standard libraries added to all projects
     dependencies {
