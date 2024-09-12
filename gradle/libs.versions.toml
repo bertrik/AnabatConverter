@@ -1,6 +1,6 @@
 [versions]
 slf4j = "2.0.12"
-errorprone = "2.31.0"
+errorprone = "2.32.0"
 
 [libraries]
 errorprone_annotations = { module = "com.google.errorprone:error_prone_annotations", version.ref = "errorprone" }
