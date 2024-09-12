@@ -24,6 +24,7 @@ public class FilteredAudioStream implements IAudioStream {
     /* (non-Javadoc)
      * @see nl.sikken.bertrik.anabat.IAudioStream#close()
      */
+    @Override
     public void close() {
         stream.close();
     }
@@ -31,6 +32,7 @@ public class FilteredAudioStream implements IAudioStream {
     /* (non-Javadoc)
      * @see nl.sikken.bertrik.anabat.IAudioStream#getNumberOfFrames()
      */
+    @Override
     public long getNumberOfFrames() {
         return stream.getNumberOfFrames();
     }
@@ -38,6 +40,7 @@ public class FilteredAudioStream implements IAudioStream {
     /* (non-Javadoc)
      * @see nl.sikken.bertrik.anabat.IAudioStream#getSample()
      */
+    @Override
     public double getSample() throws IOException {
         return filter.process(stream.getSample());
     }
@@ -45,6 +48,7 @@ public class FilteredAudioStream implements IAudioStream {
     /* (non-Javadoc)
      * @see nl.sikken.bertrik.anabat.IAudioStream#getSampleRate()
      */
+    @Override
     public int getSampleRate() {
         return stream.getSampleRate();
     }

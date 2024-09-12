@@ -1,5 +1,8 @@
 package nl.sikken.bertrik.anabat;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -7,22 +10,15 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.CharBuffer;
-import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-/**
- * @author Bertrik Sikken
- *
- */
 public final class AnabatFile {
 
 	private final Logger LOG = LoggerFactory.getLogger(AnabatFile.class);
@@ -57,10 +53,7 @@ public final class AnabatFile {
         note = "";
     }
     
-    /**
-     * @param fileName
-     * @throws IOException
-     */
+    @SuppressWarnings("UnusedVariable")
     public boolean load(File file) throws IOException {
         try (FileInputStream stream = new FileInputStream(file)) {
             // file header
@@ -78,7 +71,7 @@ public final class AnabatFile {
             }
 
             // text header
-            CharsetDecoder decoder = Charset.forName("US-ASCII").newDecoder();
+            CharsetDecoder decoder = StandardCharsets.US_ASCII.newDecoder();
             byte[] textHeader = new byte[TEXT_HEADER_SIZE];
             if (stream.read(textHeader) > 0) {
                 tape     = decoder.decode(ByteBuffer.wrap(textHeader, 0, 8)).toString();
@@ -116,10 +109,6 @@ public final class AnabatFile {
         return true;
     }
     
-    /**
-     * @param dataStream
-     * @return
-     */
     private List<Long> decode(byte[] dataStream) {
         List<Long> list = new ArrayList<Long>();
         ByteBuffer buf = ByteBuffer.wrap(dataStream);
@@ -149,15 +138,11 @@ public final class AnabatFile {
             }
             
             time += interval;
-            list.add(Long.valueOf(time));
+            list.add(time);
         }
         return list;
     }
     
-    /**
-     * @param fileName
-     * @throws IOException
-     */
     public void save(File file) throws IOException {
         try (FileOutputStream stream = new FileOutputStream(file)) {
             // file header
@@ -170,7 +155,7 @@ public final class AnabatFile {
             stream.write(fileHeaderBuf.array());
             
             // text header
-            CharsetEncoder encoder = Charset.forName("US-ASCII").newEncoder();
+            CharsetEncoder encoder = StandardCharsets.US_ASCII.newEncoder();
             byte[] textHeaderArray = new byte[TEXT_HEADER_SIZE];
             for (int i = 0; i < (textHeaderArray.length - 1); i++) {
                 textHeaderArray[i] = ' ';
@@ -211,10 +196,6 @@ public final class AnabatFile {
         }
     }
 
-    /**
-     * @param list
-     * @return
-     */
     private byte[] encode(List<Long> list) {
         ByteBuffer buf = ByteBuffer.allocate(4 * list.size());
 
@@ -229,14 +210,14 @@ public final class AnabatFile {
             } else {
                 // encode as absolute interval
                 if (interval < (1 << 13)) {
-                    buf.put((byte) (0x80 | (interval >> 8) & 0x1F));
+                    buf.put((byte) (0x80 | ((interval >> 8) & 0x1F)));
                     buf.put((byte) ((interval >> 0) & 0xFF));
                 } else if (interval < (1 << 21)) {
-                    buf.put((byte) (0xA0 | (interval >> 16) & 0x1F));
+                    buf.put((byte) (0xA0 | ((interval >> 16) & 0x1F)));
                     buf.put((byte) ((interval >> 8) & 0xFF));
                     buf.put((byte) ((interval >> 0) & 0xFF));
                 } else if (interval < (1 << 29)) {
-                    buf.put((byte) (0xC0 | (interval >> 24) & 0x1F));
+                    buf.put((byte) (0xC0 | ((interval >> 24) & 0x1F)));
                     buf.put((byte) ((interval >> 16) & 0xFF));
                     buf.put((byte) ((interval >> 8) & 0xFF));
                     buf.put((byte) ((interval >> 0) & 0xFF));

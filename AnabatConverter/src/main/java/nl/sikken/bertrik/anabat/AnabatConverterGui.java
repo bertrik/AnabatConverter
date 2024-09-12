@@ -1,44 +1,18 @@
 package nl.sikken.bertrik.anabat;
 
-import java.awt.BorderLayout;
-import java.awt.ComponentOrientation;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.Point;
+import org.apache.log4j.PropertyConfigurator;
+
+import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.border.BevelBorder;
+public final class AnabatConverterGui extends JFrame implements ActionListener {
 
-import org.apache.log4j.PropertyConfigurator;
-
-/**
- * @author Bertrik Sikken
- *
- */
-public class AnabatConverterGui extends JFrame implements ActionListener {
-
-    /**
-     * 
-     */
     private static final long serialVersionUID = 1L;
 
     private static final String APP_VERSION = "v0.8";
@@ -277,9 +251,6 @@ public class AnabatConverterGui extends JFrame implements ActionListener {
         return jTextFieldFileName;
     }
 
-    /**
-     * @return
-     */
     private JTextField getJTextFieldHighPass() {
         if (jTextFieldHighPass == null) {
             jTextFieldHighPass = new JTextField();
@@ -334,17 +305,11 @@ public class AnabatConverterGui extends JFrame implements ActionListener {
         return jButtonConvert;
     }
     
-    
-    /**
-     * @param status
-     */
     private void setStatus(String status) {
         jLabelStatusBar.setText(status);
     }
     
-    /* (non-Javadoc)
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
+    @Override
     public void actionPerformed(java.awt.event.ActionEvent event) {
         
         setStatus("Starting single conversion ...");
@@ -368,9 +333,6 @@ public class AnabatConverterGui extends JFrame implements ActionListener {
         }
     }
         
-    /**
-     * @param args
-     */
     private void createAndShowGUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -382,16 +344,12 @@ public class AnabatConverterGui extends JFrame implements ActionListener {
         getJFrame().setVisible(true);
     }
 
-    /**
-     * This method initializes jButtonSelect	
-     * 	
-     * @return javax.swing.JButton	
-     */
     private JButton getJButtonSelect() {
         if (jButtonSelect == null) {
             jButtonSelect = new JButton();
             jButtonSelect.setText("Select file...");
             jButtonSelect.addActionListener(new java.awt.event.ActionListener() {
+                @Override
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     String initialDir = new File(jTextFieldFileName.getText()).getPath();
                     JFileChooser fc = new JFileChooser(new File(initialDir));
@@ -444,6 +402,7 @@ public class AnabatConverterGui extends JFrame implements ActionListener {
             jButtonConvertMultiple = new JButton();
             jButtonConvertMultiple.setText("Convert all files in directory");
             jButtonConvertMultiple.addActionListener(new java.awt.event.ActionListener() {
+                @Override
                 public void actionPerformed(java.awt.event.ActionEvent event) {
                     
                     setStatus("Starting batch conversion ...");
@@ -467,8 +426,10 @@ public class AnabatConverterGui extends JFrame implements ActionListener {
                         jProgressBar.setMaximum(files.size());
                         jProgressBar.setStringPainted(true);
                         
-                        IProgressListener<String> listener = new IProgressListener<String>() {
+                        IProgressListener<String> listener = new IProgressListener<>() {
                             int fileCount;
+
+                            @Override
                             public void update(String string) {
                                 jProgressBar.setValue(++fileCount);
                                 jProgressBar.setString(string);
@@ -494,7 +455,7 @@ public class AnabatConverterGui extends JFrame implements ActionListener {
     
     private JComboBox<EChannel> getJComboChannel() {
         if (jComboChannel == null) {
-            jComboChannel = new JComboBox<EChannel>(EChannel.values());
+            jComboChannel = new JComboBox<>(EChannel.values());
         }
         return jComboChannel;
     }
@@ -505,6 +466,7 @@ public class AnabatConverterGui extends JFrame implements ActionListener {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new AnabatConverterGui().createAndShowGUI();
             }

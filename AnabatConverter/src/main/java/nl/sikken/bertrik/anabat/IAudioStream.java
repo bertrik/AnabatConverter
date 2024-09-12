@@ -4,16 +4,12 @@ import java.io.IOException;
 
 public interface IAudioStream {
 
-    /**
-     * @return a 
-     * @throws IOException 
-     */
-    public double getSample() throws IOException;
+    double getSample() throws IOException;
 
-    public int getSampleRate();
+    int getSampleRate();
 
-    public long getNumberOfFrames();
+    long getNumberOfFrames();
 
-    public void close();
+    void close();
 
 }

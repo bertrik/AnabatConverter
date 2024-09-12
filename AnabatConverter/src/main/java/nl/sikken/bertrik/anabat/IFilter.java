@@ -1,9 +1,5 @@
 package nl.sikken.bertrik.anabat;
 
-/**
- * @author bertrik
- *
- */
 public interface IFilter {
     
     /**
@@ -12,5 +8,5 @@ public interface IFilter {
      * @param sample the input sample
      * @return the output sample
      */
-    public double process(double sample);
+    double process(double sample);
 }

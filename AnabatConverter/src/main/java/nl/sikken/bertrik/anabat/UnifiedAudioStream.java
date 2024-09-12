@@ -50,11 +50,8 @@ public class UnifiedAudioStream implements IAudioStream {
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         samples = new int[audioFormat.getChannels()];
     }
-    
-    /**
-     * @return a 
-     * @throws IOException 
-     */
+
+    @Override
     public double getSample() throws IOException {
         
         // read one frame
@@ -87,14 +84,17 @@ public class UnifiedAudioStream implements IAudioStream {
         return samples[channel];
     }
 
+    @Override
     public int getSampleRate() {
         return (int) audioFormat.getSampleRate();
     }
-    
+
+    @Override
     public long getNumberOfFrames() {
         return numFrames;
     }
-    
+
+    @Override
     public void close() {
         try {
             if (inputStream != null) {

@@ -6,20 +6,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-/**
- * @author Bertrik Sikken
- *
- */
-public class AnabatConverter {
+public final class AnabatConverter {
 
     private final ConverterSetting settings;
 
-    /**
-     * @param settings
-     */
     public AnabatConverter(ConverterSetting settings) {
         this.settings = settings;
     }
@@ -72,7 +66,7 @@ public class AnabatConverter {
         else {
             saveDir = "anabat";
             String fileName = file.getName();
-            if (fileName.toLowerCase().endsWith(".wav")) {
+            if (fileName.toLowerCase(Locale.ROOT).endsWith(".wav")) {
                 fileName = fileName.substring(0, fileName.lastIndexOf('.'));
             }
             saveName = fileName + ".00#";

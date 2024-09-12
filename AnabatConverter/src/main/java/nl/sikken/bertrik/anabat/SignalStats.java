@@ -19,7 +19,6 @@ public class SignalStats {
      * 
      * @param stream the input stream
      * @param chunkSize size of one chunk for noise calculation
-     * @throws IOException
      */
     public void calculate(IAudioStream stream, int chunkSize) throws IOException {
     
@@ -32,7 +31,7 @@ public class SignalStats {
         int count = 0;
         double localX = 0.0;
         double localXX = 0.0;
-        noisePower = new ArrayList<Double>();
+        noisePower = new ArrayList<>();
         for (long i = 0; i < numFrames; i++) {
             double sample = stream.getSample();
             
@@ -70,9 +69,9 @@ public class SignalStats {
     }
     
     /**
-     * Gets the noise power at <percent> of total number of noise power
+     * Gets the noise power at <percent> of total number of noise power.
      * 
-     * @param percent
+     * @param percent the percentage
      * @return noise power
      */
     public double getNoisePower(int percent) {

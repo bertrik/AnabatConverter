@@ -34,10 +34,7 @@ public class BiquadHighpass extends BiquadFilter {
     }
 
     /**
-     * Constructor with default quality parameter
-     * 
-     * @param fs
-     * @param f0
+     * Constructor with default quality parameter.
      */
     public BiquadHighpass(int fs, double f0) {
         this(fs, f0, 0.7);

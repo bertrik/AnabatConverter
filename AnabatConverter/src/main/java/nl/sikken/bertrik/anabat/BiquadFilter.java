@@ -1,16 +1,14 @@
 package nl.sikken.bertrik.anabat;
 
 /**
- * Generic bi-quad filter
+ * Generic bi-quad filter.
  * 
  * Extends this class for a specific filter implementation (high-pass, low-pass, band-pass etc.)
- * 
- * @author bertrik
  */
 public abstract class BiquadFilter implements IFilter {
 
-    private double[] x = new double[3];
-    private double[] y = new double[3];
+    private final double[] x = new double[3];
+    private final double[] y = new double[3];
     
     private double[] a;
     private double[] b;
@@ -18,6 +16,7 @@ public abstract class BiquadFilter implements IFilter {
     /* (non-Javadoc)
      * @see nl.sikken.bertrik.anabat.IFilter#process(double)
      */
+    @Override
     public double process(double in) {
         x[0] = in;
         y[0] = (b[0] * x[0] + b[1] * x[1] + b[2] * x[2] - a[1] * y[1] - a[2] * y[2]);
