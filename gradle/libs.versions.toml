@@ -1,17 +1,17 @@
 [versions]
 slf4j = "2.0.12"
+errorprone = "2.31.0"
 
 [libraries]
+errorprone_annotations = { module = "com.google.errorprone:error_prone_annotations", version.ref = "errorprone" }
+errorprone_core = { module = "com.google.errorprone:error_prone_core", version.ref = "errorprone" }
 junit = "junit:junit:4.13.2"
 
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 slf4j-reload4j = { module = "org.slf4j:slf4j-log4j12", version.ref = "slf4j" }
 
-spotbugs = "com.github.spotbugs:spotbugs:4.7.3"
-
 [plugins]
 dependencycheck = "org.owasp.dependencycheck:8.4.2"
-spotbugs = "com.github.spotbugs:5.0.14"
-version-catalog-update = "nl.littlerobots.version-catalog-update:0.8.0"
+errorprone = "net.ltgt.errorprone:4.0.1"
 versions = "com.github.ben-manes.versions:0.51.0"
 
