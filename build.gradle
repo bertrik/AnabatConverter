@@ -31,7 +31,10 @@ subprojects {
     dependencies {
         errorprone(libs.errorprone.core)
         compileOnly libs.errorprone.annotations
-        testImplementation libs.junit
+
+        testImplementation(platform(libs.junit.bom))
+        testImplementation libs.junit.jupiter
+        testRuntimeOnly libs.junit.platform.launcher
 
         implementation libs.slf4j.api
     }

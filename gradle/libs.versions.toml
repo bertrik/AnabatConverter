@@ -1,11 +1,16 @@
 [versions]
-slf4j = "2.0.12"
 errorprone = "2.43.0"
+junit = "6.0.0"
+slf4j = "2.0.12"
 
 [libraries]
 errorprone_annotations = { module = "com.google.errorprone:error_prone_annotations", version.ref = "errorprone" }
 errorprone_core = { module = "com.google.errorprone:error_prone_core", version.ref = "errorprone" }
-junit = "junit:junit:4.13.2"
+#junit = "junit:junit:4.13.2"
+
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 slf4j-reload4j = { module = "org.slf4j:slf4j-log4j12", version.ref = "slf4j" }

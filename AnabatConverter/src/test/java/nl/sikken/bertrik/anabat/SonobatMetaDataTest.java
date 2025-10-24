@@ -1,10 +1,11 @@
 package nl.sikken.bertrik.anabat;
 
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class SonobatMetaDataTest {
 
@@ -13,7 +14,7 @@ public final class SonobatMetaDataTest {
         SonobatMetaData metaData = new SonobatMetaData();
         
         File file = new File("8251259-20120211_061851.wav");
-        Assert.assertTrue(metaData.load(file));
+        assertTrue(metaData.load(file));
     }
     
 }
