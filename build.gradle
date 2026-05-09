@@ -1,5 +1,4 @@
 plugins {
-    alias libs.plugins.dependencycheck
     alias libs.plugins.errorprone
     alias libs.plugins.versions
 }
@@ -7,10 +6,6 @@ plugins {
 version = '0.1'
 
 allprojects { group = 'nl.bertriksikken' }
-
-dependencyCheck {
-    scanConfigurations = ['runtimeClasspath']
-}
 
 subprojects {
     apply plugin: "java"
