@@ -1,12 +1,11 @@
 [versions]
-errorprone = "2.43.0"
-junit = "6.0.0"
+errorprone = "2.49.0"
+junit = "6.0.3"
 slf4j = "2.0.12"
 
 [libraries]
 errorprone_annotations = { module = "com.google.errorprone:error_prone_annotations", version.ref = "errorprone" }
 errorprone_core = { module = "com.google.errorprone:error_prone_core", version.ref = "errorprone" }
-#junit = "junit:junit:4.13.2"
 
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
@@ -17,6 +16,6 @@ slf4j-reload4j = { module = "org.slf4j:slf4j-log4j12", version.ref = "slf4j" }
 
 [plugins]
 dependencycheck = "org.owasp.dependencycheck:8.4.2"
-errorprone = "net.ltgt.errorprone:4.3.0"
-versions = "com.github.ben-manes.versions:0.53.0"
+errorprone = "net.ltgt.errorprone:5.1.0"
+versions = "com.github.ben-manes.versions:0.54.0"
 
